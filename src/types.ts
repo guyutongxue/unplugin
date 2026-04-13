@@ -2,7 +2,7 @@ import type { CompilationContext as FarmCompilationContext, JsPlugin as FarmPlug
 import type { Compilation as RspackCompilation, Compiler as RspackCompiler, LoaderContext as RspackLoaderContext, RspackPluginInstance } from '@rspack/core'
 import type { BunPlugin, PluginBuilder as BunPluginBuilder } from 'bun'
 import type { BuildOptions, Plugin as EsbuildPlugin, Loader, PluginBuild } from 'esbuild'
-import type { PathLike, ReadFileOptions, Stats } from 'node:fs'
+import type { PathLike, Stats } from 'node:fs'
 import type { Plugin as RolldownPlugin } from 'rolldown'
 import type { EmittedAsset, PluginContextMeta as RollupContextMeta, Plugin as RollupPlugin, SourceMapInput } from 'rollup'
 import type { Plugin as UnloaderPlugin } from 'unloader'
@@ -67,7 +67,7 @@ export interface UnpluginBuildContext {
 }
 
 export interface UnpluginContextFs {
-  readFile: (path: PathLike, options?: ReadFileOptions | BufferEncoding | null) => Promise<string | Buffer>
+  readFile: (path: PathLike, options?: any) => Promise<string | Uint8Array>
   stat: (path: PathLike) => Promise<Stats>
   lstat: (path: PathLike) => Promise<Stats>
 }

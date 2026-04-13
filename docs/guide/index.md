@@ -310,7 +310,7 @@ More details can be found in the [Rolldown's documentation](https://rolldown.rs/
 | Context                                                                               | Rollup | Vite | webpack | esbuild | Rspack | Farm | Rolldown | Bun |
 | ------------------------------------------------------------------------------------- | :----: | :--: | :-----: | :-----: | :----: | :--: | :------: | :-: |
 | [`this.parse`](https://rollupjs.org/plugin-development/#this-parse)<sup>1</sup>       |   ✅   |  ✅  |   ✅    |   ✅    |   ✅   |  ✅  |    ✅    | ✅  |
-| [`this.fs`](https://rollupjs.org/plugin-development/#this-fs)<sup>3</sup>               |   ✅   |  ✅  |   ✅    |   ✅    |   ✅   |  ✅  |    ✅    | ✅  |
+| [`this.fs`](https://rollupjs.org/plugin-development/#this-fs)<sup>3</sup>             |   ✅   |  ✅  |   ✅    |   ✅    |   ✅   |  ✅  |    ✅    | ✅  |
 | [`this.addWatchFile`](https://rollupjs.org/plugin-development/#this-addwatchfile)     |   ✅   |  ✅  |   ✅    |   ❌    |   ✅   |  ✅  |    ✅    | ✅  |
 | [`this.emitFile`](https://rollupjs.org/plugin-development/#this-emitfile)<sup>2</sup> |   ✅   |  ✅  |   ✅    |   ✅    |   ✅   |  ✅  |    ✅    | ✅  |
 | [`this.getWatchFiles`](https://rollupjs.org/plugin-development/#this-getwatchfiles)   |   ✅   |  ✅  |   ✅    |   ❌    |   ✅   |  ✅  |    ✅    | ✅  |

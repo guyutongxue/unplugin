@@ -21,7 +21,8 @@ function createResolveIdHook(): Mock {
     for (const prop of propsToTest) {
       expect(this).toHaveProperty(prop)
       if (prop === 'fs') {
-        expect(this.fs).toBeInstanceOf(Object)
+        expect(this.fs).toBeTruthy()
+        expect(typeof this.fs).toBe('object')
         expect(this.fs.readFile).toBeInstanceOf(Function)
         expect(this.fs.stat).toBeInstanceOf(Function)
         expect(this.fs.lstat).toBeInstanceOf(Function)
@@ -35,7 +36,10 @@ function createResolveIdHook(): Mock {
 }
 
 function checkResolveIdHook(resolveIdCallback: Mock): void {
-  expect.assertions(4 * (1 + ((propsToTest.length - 1) * 2) + 5))
+  const fsAssertionsPerHookCall = 6 // `toHaveProperty('fs')` + 5 checks in the `prop === 'fs'` branch
+  const nonFsAssertionsPerHookCall = (propsToTest.length - 1) * 2
+  const calledWithAssertionPerHookCall = 1
+  expect.assertions(4 * (calledWithAssertionPerHookCall + nonFsAssertionsPerHookCall + fsAssertionsPerHookCall))
 
   expect(resolveIdCallback).toHaveBeenCalledWith(
     expect.stringMatching(/(?:\/|\\)entry\.js$/),
