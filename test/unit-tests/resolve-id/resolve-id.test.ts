@@ -14,20 +14,28 @@ function createUnpluginWithCallback(resolveIdCallback: UnpluginOptions['resolveI
 }
 
 // We extract this check because all bundlers should behave the same
-const propsToTest: (keyof (UnpluginContext & UnpluginBuildContext))[] = ['addWatchFile', 'emitFile', 'getWatchFiles', 'parse', 'error', 'warn']
+const propsToTest: (keyof (UnpluginContext & UnpluginBuildContext))[] = ['addWatchFile', 'emitFile', 'getWatchFiles', 'parse', 'error', 'warn', 'fs']
 
 function createResolveIdHook(): Mock {
   const mockResolveIdHook = vi.fn(function (this: UnpluginContext & UnpluginBuildContext) {
     for (const prop of propsToTest) {
       expect(this).toHaveProperty(prop)
-      expect(this[prop]).toBeInstanceOf(Function)
+      if (prop === 'fs') {
+        expect(this.fs).toBeInstanceOf(Object)
+        expect(this.fs.readFile).toBeInstanceOf(Function)
+        expect(this.fs.stat).toBeInstanceOf(Function)
+        expect(this.fs.lstat).toBeInstanceOf(Function)
+      }
+      else {
+        expect(this[prop]).toBeInstanceOf(Function)
+      }
     }
   })
   return mockResolveIdHook
 }
 
 function checkResolveIdHook(resolveIdCallback: Mock): void {
-  expect.assertions(4 * (1 + propsToTest.length * 2))
+  expect.assertions(4 * (1 + ((propsToTest.length - 1) * 2) + 5))
 
   expect(resolveIdCallback).toHaveBeenCalledWith(
     expect.stringMatching(/(?:\/|\\)entry\.js$/),
