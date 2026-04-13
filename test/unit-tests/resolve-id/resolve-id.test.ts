@@ -36,7 +36,7 @@ function createResolveIdHook(): Mock {
 }
 
 function checkResolveIdHook(resolveIdCallback: Mock): void {
-  const fsAssertionsPerHookCall = 6 // `toHaveProperty('fs')` + 5 checks in the `prop === 'fs'` branch
+  const fsAssertionsPerHookCall = 6 // `toHaveProperty('fs')` + 5 assertions (`toBeTruthy`, `typeof`, `readFile`, `stat`, `lstat`)
   const nonFsAssertionsPerHookCall = (propsToTest.length - 1) * 2
   const calledWithAssertionPerHookCall = 1
   expect.assertions(4 * (calledWithAssertionPerHookCall + nonFsAssertionsPerHookCall + fsAssertionsPerHookCall))
