@@ -1,28 +1,32 @@
+import type { InputFileSystem } from 'webpack'
 import type { UnpluginContextFs } from '../types'
-import fs from 'node:fs'
-import { promisify } from 'node:util'
+import pify from 'pify'
 
-interface FsLike {
-  readFile?: ((...args: any[]) => any) | undefined
-  stat?: ((...args: any[]) => any) | undefined
-  lstat?: ((...args: any[]) => any) | undefined
+// Dynamic import node:fs module since it may not be available in some environments
+function createNodeFs(): UnpluginContextFs {
+  const fsPromiseModule = import('node:fs/promises')
+  return {
+    readFile: async (path, options) => {
+      const fs = await fsPromiseModule
+      return fs.readFile(path, options)
+    },
+    stat: async (path, options) => {
+      const fs = await fsPromiseModule
+      return fs.stat(path, options)
+    },
+    lstat: async (path, options) => {
+      const fs = await fsPromiseModule
+      return fs.lstat(path, options)
+    },
+  }
 }
 
-export function createBuildContextFs(inputFs?: FsLike): UnpluginContextFs {
-  const fsLike = inputFs ?? fs
-  const readFile = (typeof fsLike.readFile === 'function'
-    ? promisify(fsLike.readFile.bind(fsLike))
-    : fs.promises.readFile) as UnpluginContextFs['readFile']
-  const stat = (typeof fsLike.stat === 'function'
-    ? promisify(fsLike.stat.bind(fsLike))
-    : fs.promises.stat) as UnpluginContextFs['stat']
-  const lstat = (typeof fsLike.lstat === 'function'
-    ? promisify(fsLike.lstat.bind(fsLike))
-    : fs.promises.lstat) as UnpluginContextFs['lstat']
+export function createBuildContextFs(inputFs?: InputFileSystem | null): UnpluginContextFs {
+  const fs = inputFs ? pify(inputFs) : createNodeFs()
 
   return {
-    readFile,
-    stat,
-    lstat,
+    readFile: fs.readFile as UnpluginContextFs['readFile'],
+    stat: fs.stat as UnpluginContextFs['stat'],
+    lstat: fs.lstat as UnpluginContextFs['lstat'],
   }
 }

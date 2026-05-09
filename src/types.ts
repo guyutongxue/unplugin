@@ -68,8 +68,8 @@ export interface UnpluginBuildContext {
 
 export interface UnpluginContextFs {
   readFile: (path: PathLike, options?: any) => Promise<string | Uint8Array>
-  stat: (path: PathLike) => Promise<Stats>
-  lstat: (path: PathLike) => Promise<Stats>
+  stat: (path: PathLike, options?: any) => Promise<Stats>
+  lstat: (path: PathLike, options?: any) => Promise<Stats>
 }
 
 export type StringOrRegExp = string | RegExp

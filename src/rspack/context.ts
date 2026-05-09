@@ -6,7 +6,7 @@ import { createBuildContextFs } from '../utils/fs'
 import { parse } from '../utils/parse'
 
 export function createBuildContext(compiler: Compiler, compilation: Compilation, loaderContext?: LoaderContext, inputSourceMap?: any): UnpluginBuildContext {
-  const inputFs = (loaderContext as any)?.fs ?? compiler.inputFileSystem
+  const inputFs = loaderContext?.fs ?? compiler.inputFileSystem
   return {
     fs: createBuildContextFs(inputFs),
     getNativeBuildContext() {
